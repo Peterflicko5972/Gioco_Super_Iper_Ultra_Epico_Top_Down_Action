@@ -90,7 +90,7 @@ class MyGame(arcade.Window):
         
 
 def run_game():
-    game = MyGame(1500, 800, "Endless Galactic Ship")
+    game = MyGame(1300, 800, "Endless Galactic Ship")
     game.setup() 
     arcade.run()
 
