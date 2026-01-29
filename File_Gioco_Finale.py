@@ -76,7 +76,7 @@ class MyGame(arcade.Window):
         """ Configura il gioco e inizializza gli oggetti """
 
        
-        self.Owlet = arcade.Sprite("Owlet_Monster.png" ; scale=1)
+        self.Owlet = arcade.Sprite("Owlet_Monster.png" , scale=1)
         
         
         self.Owlet.center_x = self.width // 2
