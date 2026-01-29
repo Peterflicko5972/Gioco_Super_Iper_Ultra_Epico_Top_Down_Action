@@ -23,7 +23,7 @@ class Game(arcade.Window):
         self.attack_list = arcade.SpriteList()
 
         # Player
-        self.player = arcade.SpriteSolidColor(40, 50, arcade.color.WHITE)
+        self.player_texture = arcade.load_texture("")
         self.player.center_x = 100
         self.player.center_y = 300
         self.player.health = 5
