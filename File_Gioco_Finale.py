@@ -87,12 +87,3 @@ class MyGame(arcade.Window):
 
     def on_draw(self):
         self.clear()
-        
-
-def run_game():
-    game = MyGame(1300, 800, "Endless Galactic Ship")
-    game.setup() 
-    arcade.run()
-
-if __name__ == "__main__":
-    run_game()
