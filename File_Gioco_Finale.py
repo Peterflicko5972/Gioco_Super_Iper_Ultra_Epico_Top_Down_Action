@@ -87,3 +87,9 @@ class MyGame(arcade.Window):
 
     def on_draw(self):
         self.clear()
+
+def main():
+    game=MyGame()
+    arcade.run()
+if __name__ == "__main__":
+    main()
