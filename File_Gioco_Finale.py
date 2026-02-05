@@ -2,10 +2,10 @@ import arcade
 import random
 
 PLAYER_SPEED = 5
-GRAVITY = 0.6
+GRAVITY = 1
 JUMP_SPEED = 12
 DOUBLE_JUMP_SPEED = 12
-ENEMY_SPEED = 2.0
+ENEMY_SPEED = 1.5
 SPAWN_INTERVAL = 2.0
 
 SCREEN_WIDTH = 1920
@@ -14,7 +14,7 @@ SCREEN_HEIGHT = 1080
 class Game(arcade.Window):
     def __init__(self):
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Mini Hollow Knight", fullscreen=True)
-        arcade.set_background_color(arcade.color.BLACK)
+        arcade.set_background_color(arcade.color.BLUE_SAPPHIRE)
 
         # SpriteLists
         self.player_list = arcade.SpriteList()
@@ -23,7 +23,7 @@ class Game(arcade.Window):
         self.attack_list = arcade.SpriteList()
 
         # Player
-        self.player_texture = arcade.load_texture("")
+        self.player = arcade.SpriteSolidColor(40, 50, arcade.color.WHITE)
         self.player.center_x = 100
         self.player.center_y = 300
         self.player.health = 5
