@@ -14,7 +14,8 @@ SCREEN_HEIGHT = 1080
 class Game(arcade.Window):
     def __init__(self):
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Mini Hollow Knight", fullscreen=True)
-        arcade.set_background_color(arcade.color.BLUE_SAPPHIRE)
+        arcade.set_background_color(arcade.color.RICH_BLACK)
+        
 
         # SpriteLists
         self.player_list = arcade.SpriteList()
