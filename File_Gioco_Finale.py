@@ -14,7 +14,7 @@ SCREEN_HEIGHT = 1080
 class Game(arcade.Window):
     def __init__(self):
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Mini Hollow Knight", fullscreen=True)
-        arcade.set_background_color(arcade.color.RICH_BLACK)
+        self.background = arcade.load_texture("./Immagini/Kingdom_Edge_Background.png")
 
 
         # SpriteLists
@@ -100,6 +100,8 @@ class Game(arcade.Window):
             else:
                 attack.center_x = self.player.center_x + self.player.direction * 30
                 attack.center_y = self.player.center_y
+            if attack.collides_with_list:
+                self.player.change_x = 1
             self.attack_list.append(attack)
             self.attack_cooldown = 15
 
