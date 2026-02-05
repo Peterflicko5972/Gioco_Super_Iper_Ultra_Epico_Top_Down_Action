@@ -1,12 +1,12 @@
 import arcade
 import random
 
-PLAYER_SPEED = 5
-GRAVITY = 1
-JUMP_SPEED = 12
-DOUBLE_JUMP_SPEED = 12
+PLAYER_SPEED = 7
+GRAVITY = 0.7
+JUMP_SPEED = 15
+DOUBLE_JUMP_SPEED = 15
 ENEMY_SPEED = 1.5
-SPAWN_INTERVAL = 2.0
+SPAWN_INTERVAL = 5.0
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -15,7 +15,7 @@ class Game(arcade.Window):
     def __init__(self):
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Mini Hollow Knight", fullscreen=True)
         arcade.set_background_color(arcade.color.RICH_BLACK)
-        
+
 
         # SpriteLists
         self.player_list = arcade.SpriteList()
@@ -24,7 +24,9 @@ class Game(arcade.Window):
         self.attack_list = arcade.SpriteList()
 
         # Player
-        self.player = arcade.SpriteSolidColor(40, 50, arcade.color.WHITE)
+        self.player = arcade.Sprite("./immagini/Cavaliere_vuoto.png")
+        self.player.scale_x = 0.1
+        self.player.scale_y = 0.1
         self.player.center_x = 100
         self.player.center_y = 300
         self.player.health = 5
@@ -71,26 +73,30 @@ class Game(arcade.Window):
         if key == arcade.key.A:
             self.player.change_x = -PLAYER_SPEED
             self.player.direction = -1
+            self.player.scale_x = -0.1
+
         if key == arcade.key.D:
             self.player.change_x = PLAYER_SPEED
             self.player.direction = 1
-        if key == arcade.key.W:
+            self.player.scale_x = 0.1
+
+        if key == arcade.key.SPACE or key == arcade.key.W:
             if self.physics_engine.can_jump():
                 self.player.change_y = JUMP_SPEED
                 self.can_double_jump = True
             elif self.can_double_jump:
                 self.player.change_y = DOUBLE_JUMP_SPEED
-                self.can_double_jump = False
+                self.can_double_jump = True
 
         # Attacco
         if key == arcade.key.ENTER and self.attack_cooldown == 0:
-            attack = arcade.SpriteSolidColor(30, 20, arcade.color.WHITE)
-            if modifiers & arcade.key.UP:
+            attack = arcade.SpriteSolidColor(50, 30, arcade.color.WHITE)
+            if modifiers & arcade.key.W:
                 attack.center_x = self.player.center_x
-                attack.center_y = self.player.center_y + 30
-            elif modifiers & arcade.key.DOWN:
+                attack.center_y = self.player.center_y + 50
+            elif modifiers & arcade.key.S:
                 attack.center_x = self.player.center_x
-                attack.center_y = self.player.center_y - 30
+                attack.center_y = self.player.center_y - 50
             else:
                 attack.center_x = self.player.center_x + self.player.direction * 30
                 attack.center_y = self.player.center_y
@@ -140,10 +146,6 @@ class Game(arcade.Window):
             hits = arcade.check_for_collision_with_list(atk, self.enemies_list)
             for en in hits:
                 en.remove_from_sprite_lists()
-
-        # Camera segue player
-        # self.camera.position = (self.player.center_x - SCREEN_WIDTH/2,
-                                # self.player.center_y - SCREEN_HEIGHT/2)
 
         # Aggiorna HUD
         self.health_text.text = f"Vita: {self.player.health}"
