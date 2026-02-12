@@ -100,7 +100,7 @@ class Game(arcade.Window):
             else:
                 attack.center_x = self.player.center_x + self.player.direction * 30
                 attack.center_y = self.player.center_y
-            if attack.collides_with_list:
+            if attack.collides_with_sprite:
                 self.player.change_x = 1
             self.attack_list.append(attack)
             self.attack_cooldown = 15
@@ -125,7 +125,8 @@ class Game(arcade.Window):
         self.total_time += delta_time
         if self.total_time > SPAWN_INTERVAL:
             self.total_time = 0
-            e = arcade.SpriteSolidColor(40, 40, arcade.color.RED)
+            e = arcade.Sprite("./Immagini/B_Vengefly.png")
+            e.scale = 0.55
             e.center_x = random.randint(0, SCREEN_WIDTH)
             e.center_y = random.randint(100, SCREEN_HEIGHT - 100)
             self.enemies_list.append(e)
@@ -162,9 +163,13 @@ class Game(arcade.Window):
     # Draw
     def on_draw(self):
         self.clear()
+        # Disegna lo sfondo
+        arcade.draw_texture_rect(self.background, arcade.XYWH(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, SCREEN_WIDTH,SCREEN_HEIGHT))
 
         # Disegna mondo con camera
+
         self.camera.use()
+
         self.platforms.draw()
         self.enemies_list.draw()
         self.player_list.draw()
