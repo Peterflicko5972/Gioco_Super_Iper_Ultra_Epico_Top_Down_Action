@@ -35,6 +35,14 @@ class Game(arcade.Window):
         self.attack_cooldown = 0
         self.player_list.append(self.player)
 
+        # Dash
+        self.is_dashing = False
+        self.dash_timer = 0
+        self.dash_duration = 10
+        self.dash_speed = 25
+        self.dash_cooldown = 0
+        self.dash_cooldown_max = 30
+
         # Piattaforme
         platforms_data = [
             (960, 20, 1920, 40),
@@ -86,7 +94,13 @@ class Game(arcade.Window):
                 self.can_double_jump = True
             elif self.can_double_jump:
                 self.player.change_y = DOUBLE_JUMP_SPEED
-                self.can_double_jump = True
+                self.can_double_jump = False
+
+        # Dash
+        if key == arcade.key.LSHIFT and not self.is_dashing and self.dash_cooldown == 0:
+            self.is_dashing = True
+            self.dash_timer = self.dash_duration
+            self.dash_cooldown = self.dash_cooldown_max
 
         # Attacco
         if key == arcade.key.ENTER and self.attack_cooldown == 0:
@@ -100,8 +114,6 @@ class Game(arcade.Window):
             else:
                 attack.center_x = self.player.center_x + self.player.direction * 30
                 attack.center_y = self.player.center_y
-            if attack.collides_with_sprite:
-                self.player.change_x = 1
             self.attack_list.append(attack)
             self.attack_cooldown = 15
 
