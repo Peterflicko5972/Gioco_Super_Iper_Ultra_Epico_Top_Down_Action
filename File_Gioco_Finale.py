@@ -97,7 +97,7 @@ class Game(arcade.Window):
                 self.can_double_jump = False
 
         # Dash
-        if key == arcade.key.LSHIFT and not self.is_dashing and self.dash_cooldown == 0:
+        if key == arcade.key.RSHIFT:
             self.is_dashing = True
             self.dash_timer = self.dash_duration
             self.dash_cooldown = self.dash_cooldown_max
