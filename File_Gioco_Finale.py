@@ -2,6 +2,7 @@ import arcade
 import random
 
 PLAYER_SPEED = 7
+PLAYER_HEALT = 5
 GRAVITY = 0.7
 JUMP_SPEED = 15
 DOUBLE_JUMP_SPEED = 15
@@ -56,7 +57,7 @@ class Game(arcade.Window):
             plat.center_y = y
             self.platforms.append(plat)
 
-        # Physics engine
+        # Gravità
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player, self.platforms, GRAVITY)
 
         # Timer nemici
@@ -64,8 +65,6 @@ class Game(arcade.Window):
 
         # Camera
         self.camera = arcade.Camera2D()
-        # self.camera.position = (SCREEN_WIDTH/2,
-                                # SCREEN_HEIGHT/2)
 
         # HUD testo
         self.health_text = arcade.Text(
@@ -75,6 +74,7 @@ class Game(arcade.Window):
             arcade.color.WHITE,
             20
         )
+        arcade.draw_text(f"Vita: {self.player.health}", SCREEN_HEIGHT/2, SCREEN_WIDTH/2)
 
     # Input
     def on_key_press(self, key, modifiers):
@@ -104,17 +104,17 @@ class Game(arcade.Window):
 
         # Attacco
         if key == arcade.key.ENTER and self.attack_cooldown == 0:
-            attack = arcade.SpriteSolidColor(50, 30, arcade.color.WHITE)
+            self.attack = arcade.SpriteSolidColor(50, 30, arcade.color.WHITE)
             if modifiers & arcade.key.W:
-                attack.center_x = self.player.center_x
-                attack.center_y = self.player.center_y + 50
+                self.attack.center_x = self.player.center_x
+                self.attack.center_y = self.player.center_y + 50
             elif modifiers & arcade.key.S:
-                attack.center_x = self.player.center_x
-                attack.center_y = self.player.center_y - 50
+                self.attack.center_x = self.player.center_x
+                self.attack.center_y = self.player.center_y - 50
             else:
-                attack.center_x = self.player.center_x + self.player.direction * 30
-                attack.center_y = self.player.center_y
-            self.attack_list.append(attack)
+                self.attack.center_x = self.player.center_x + self.player.direction * 30
+                self.attack.center_y = self.player.center_y
+            self.attack_list.append(self.attack)
             self.attack_cooldown = 15
 
     def on_key_release(self, key, modifiers):
@@ -135,39 +135,44 @@ class Game(arcade.Window):
 
         # Spawn nemici
         self.total_time += delta_time
-        if self.total_time > SPAWN_INTERVAL:
+        if self.total_time > SPAWN_INTERVAL and len(self.enemies_list) < 10:
             self.total_time = 0
-            e = arcade.Sprite("./Immagini/B_Vengefly.png")
-            e.scale = 0.55
-            e.center_x = random.randint(0, SCREEN_WIDTH)
-            e.center_y = random.randint(100, SCREEN_HEIGHT - 100)
-            self.enemies_list.append(e)
+            self.enemy = arcade.Sprite("./Immagini/B_Vengefly.png")
+            self.enemy.scale = 0.55
+            self.enemy.center_x = random.randint(0, SCREEN_WIDTH)
+            self.enemy.center_y = random.randint(100, SCREEN_HEIGHT - 100)
+            self.enemies_list.append(self.enemy)
 
         # Nemici inseguono player
-        for enemy in self.enemies_list:
-            dx = self.player.center_x - enemy.center_x
-            dy = self.player.center_y - enemy.center_y
+        for self.enemy in self.enemies_list:
+            dx = self.player.center_x - self.enemy.center_x
+            dy = self.player.center_y - self.enemy.center_y
             if dx != 0:
-                enemy.center_x += ENEMY_SPEED * (dx / abs(dx))
+                self.enemy.center_x += ENEMY_SPEED * (dx / abs(dx))
             if dy != 0:
-                enemy.center_y += (ENEMY_SPEED/2) * (dy / abs(dy))
+                self.enemy.center_y += (ENEMY_SPEED/2) * (dy / abs(dy))
 
-            if arcade.check_for_collision(self.player, enemy):
+            if arcade.check_for_collision(self.player, self.enemy):
                 self.player.health -= 1
-                self.player.center_x -= self.player.direction * 30
+                self.player.center_x -= self.player.direction * 100
 
         # Attacchi vs nemici
         for atk in self.attack_list:
             hits = arcade.check_for_collision_with_list(atk, self.enemies_list)
-            for en in hits:
-                en.remove_from_sprite_lists()
+            for self.enemy in hits:
+                self.enemy.remove_from_sprite_lists()
+
+        #Immunità post danno
+        #arcade.check_for_collision_with_lists(self.player_list, self.enemies_list)
 
         # Aggiorna HUD
         self.health_text.text = f"Vita: {self.player.health}"
 
         # Game over
         if self.player.health <= 0:
-            arcade.close_window()
+            self.player.remove_from_sprite_lists()
+            self.enemy.remove_from_sprite_lists()
+            self.attack.remove_from_sprite_lists()
 
         print(self.player.center_x)
         print(self.player.center_y)
