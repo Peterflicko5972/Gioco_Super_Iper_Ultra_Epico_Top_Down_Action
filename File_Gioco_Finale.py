@@ -98,7 +98,7 @@ class Game(arcade.Window):
 
         # Dash
         if key == arcade.key.RSHIFT:
-            self.is_dashing = True
+            self.is_dashing = False
             self.dash_timer = self.dash_duration
             self.dash_cooldown = self.dash_cooldown_max
 
@@ -173,6 +173,7 @@ class Game(arcade.Window):
             self.player.remove_from_sprite_lists()
             self.enemy.remove_from_sprite_lists()
             self.attack.remove_from_sprite_lists()
+            print("Game Over")
 
         print(self.player.center_x)
         print(self.player.center_y)
@@ -194,6 +195,7 @@ class Game(arcade.Window):
 
         # HUD fisso
         self.health_text.draw()
+        
 
 game = Game()
 arcade.run()
