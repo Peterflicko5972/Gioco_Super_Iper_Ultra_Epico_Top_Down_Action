@@ -1,8 +1,6 @@
 import arcade
 import random
 
-from Livello2 import Livello2
-
 PLAYER_SPEED = 7
 PLAYER_HEALT = 5
 GRAVITY = 0.7
@@ -13,8 +11,10 @@ SPAWN_INTERVAL = 5.0
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
 
-class Game(arcade.View):
+class Livello2(arcade.View):
     def __init__(self):
+
+        print("INIZIA IL LIVELLO 2")
         self.background = arcade.load_texture("./Immagini/Kingdom_Edge_Background.png")
 
 
@@ -46,7 +46,7 @@ class Game(arcade.View):
 
         # Piattaforme
         platforms_data = [
-            (960, 20, 1920, 40),
+            (160, 20, 1920, 40),
             (400, 200, 200, 20),
             (800, 400, 200, 20),
             (1400, 600, 200, 20),
@@ -83,12 +83,6 @@ class Game(arcade.View):
 
     # Input
     def on_key_press(self, key, modifiers):
-        if key == arcade.key.N:
-            print("Prossimo")
-            livello2 = Livello2()
-            livello2.window = self.window
-            livello2.setup()
-            self.window.show_view(livello2) 
         if key == arcade.key.A:
             self.player.change_x = -PLAYER_SPEED
             self.player.direction = -1
@@ -185,6 +179,9 @@ class Game(arcade.View):
             self.enemy.remove_from_sprite_lists()
             self.attack.remove_from_sprite_lists()
             print("Game Over")
+
+        print(self.player.center_x)
+        print(self.player.center_y)
 
     # Draw
     def on_draw(self):
