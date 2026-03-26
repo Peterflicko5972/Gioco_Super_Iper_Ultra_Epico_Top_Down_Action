@@ -1,3 +1,6 @@
+import arcade
+import random
+
 # file MenuView.py
 class MenuView(arcade.View): # MenuView è una View... Ricordiamoci delle sottoclassi!
     def on_draw(self):
