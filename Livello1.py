@@ -1,7 +1,10 @@
 import arcade
 import random
 
+from Livello2 import Game2
+
 PLAYER_SPEED = 6
+PLAYER_HEALT = 10
 GRAVITY = 0.7
 JUMP_SPEED = 15
 DOUBLE_JUMP_SPEED = 15
@@ -11,7 +14,7 @@ SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
 
 
-class Game2(arcade.View):
+class Game(arcade.View):
 
     def __init__(self):
         super().__init__()
@@ -53,7 +56,6 @@ class Game2(arcade.View):
             (400, 200, 200, 20),
             (800, 400, 200, 20),
             (1400, 600, 200, 20),
-            (200, 300, 200, 20)
         ]
 
         for x, y, w, h in platforms_data:
@@ -86,6 +88,14 @@ class Game2(arcade.View):
 
     # INPUT
     def on_key_press(self, key, modifiers):
+
+        # CAMBIO LIVELLO
+        if key == arcade.key.N:
+            if self.nemici_uccisi >= 10:
+                livello2 = Game2()
+                livello2.window = self.window
+                livello2.setup()
+                self.window.show_view(livello2)
 
         if key == arcade.key.A:
             self.player.change_x = -PLAYER_SPEED
@@ -160,7 +170,7 @@ class Game2(arcade.View):
             self.total_time = 0
 
             enemy = arcade.Sprite("./Immagini/B_Vengefly.png")
-            enemy.scale = 0.55
+            enemy.scale = 0.50
 
             enemy.center_x = random.randint(0, SCREEN_WIDTH)
             enemy.center_y = random.randint(100, SCREEN_HEIGHT - 100)
@@ -179,13 +189,12 @@ class Game2(arcade.View):
             if dy != 0:
                 enemy.center_y += (ENEMY_SPEED / 2) * (dy / abs(dy))
 
-            if arcade.check_for_collision(self.player, enemy):
-                if self.damage_cooldown == 0:
-                    self.player.health -= 1
-                    self.player.center_x -= self.player.direction * 100                       
-                    self.damage_cooldown = self.damage_cooldown_max
-
-
+                if arcade.check_for_collision(self.player, enemy):
+                    if self.damage_cooldown == 0:
+                        self.player.health -= 1
+                        self.player.center_x -= self.player.direction * 100
+                        self.damage_cooldown = self.damage_cooldown_max
+                    
         # ATTACCHI
         for atk in self.attack_list:
 

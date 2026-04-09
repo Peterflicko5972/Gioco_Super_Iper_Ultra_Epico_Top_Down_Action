@@ -1,7 +1,8 @@
 import arcade
 import random
 
-from File_Gioco_Finale import Game
+from Livello1 import Game
+from Livello2 import Game2
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -10,10 +11,14 @@ SCREEN_HEIGHT = 1080
 class MenuView(arcade.View): # MenuView è una View... Ricordiamoci delle sottoclassi!
     def on_draw(self):
         self.clear()
-        arcade.draw_text("IL MIO GIOCO", 480, 350,
-                         arcade.color.WHITE, font_size=48, anchor_x="center")
-        arcade.draw_text("Premi INVIO per iniziare", 480, 250,
-                         arcade.color.LIGHT_GRAY, font_size=20, anchor_x="center")
+        arcade.draw_text("Mini Hollow Knight", 650, 400,
+                         arcade.color.BLUE_GRAY, font_size=50, anchor_x="center")
+        arcade.draw_text("Premi INVIO per iniziare", 650, 325,
+                         arcade.color.LIGHT_GRAY, font_size=30, anchor_x="center")
+        arcade.draw_text("Movimento: WASD", 650, 250,
+                         arcade.color.YELLOW_ORANGE, font_size=20, anchor_x="center")
+        arcade.draw_text("Attacco: INVIO", 650, 200,
+                         arcade.color.RED_PURPLE, font_size=20, anchor_x="center")
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.RETURN:
@@ -21,28 +26,8 @@ class MenuView(arcade.View): # MenuView è una View... Ricordiamoci delle sottoc
             game = Game()
             game.window = self.window
             game.setup()
-            self.window.show_view(game) 
+            self.window.show_view(game)
 
-# file GameView.py
-# class GameView(arcade.View):
-#     def setup(self):
-#         self.player = Player()
-#         self.camera = arcade.Camera2D()
-#         # ... setup del nnngioco ...
-
-#     def on_draw(self):
-#         self.clear()
-#         # disegna la scena
-
-#     def on_update(self, delta_time: float):
-#         self.player.update()
-
-#     def on_key_press(self, key, modifiers):
-#         if key == arcade.key.ESCAPE:
-#             pausa = PauseView(self)  # passiamo noi stessi per poter tornare in futuro, allo stato del gioco che avviene in questo momento
-#             self.window.show_view(pausa)
-
-# file MyGame.py
 class MyGame(arcade.Window):
     def __init__(self):
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Mini Hollow Knight", fullscreen=True)
